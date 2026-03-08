@@ -3,7 +3,7 @@
 ## Live Demo
 
  **Production URL**  
-https://edaccelerator-assessment-psi.vercel.app
+https://ai-reading-comprehension-platform-psi.vercel.app
 
 (Responsive and tested on both desktop and mobile)
 
