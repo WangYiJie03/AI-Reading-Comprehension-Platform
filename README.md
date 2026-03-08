@@ -1,4 +1,4 @@
-# EdAccelerator – AI Reading Comprehension Interface
+# AI Reading Comprehension Interface
 
 ## Live Demo
 
@@ -11,9 +11,7 @@ https://edaccelerator-assessment-psi.vercel.app
 
 ## Overview
 
-This project is a take-home technical assessment for the **Junior Software Engineer** role at **EdAccelerator**.
-
-The goal is to design and build a **next-generation reading comprehension interface** that improves student engagement, encourages genuine understanding, and demonstrates thoughtful AI integration.
+The goal of this project is to design and build a **next-generation reading comprehension interface** that improves student engagement, encourages genuine understanding, and demonstrates thoughtful AI integration.
 
 The application allows students to:
 
