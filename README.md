@@ -1,4 +1,4 @@
-# AI Reading Comprehension Interface
+# AI Reading Comprehension Platform
 
 ## Live Demo
 
