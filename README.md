@@ -2,6 +2,17 @@
 
 A production-minded full-stack reading comprehension application that generates questions, evaluates answers, and remains reliable even when external AI services are unavailable.
 
+## TL;DR
+
+A full-stack reading comprehension app that:
+
+- lets users read a passage and answer AI-generated questions
+- provides instant feedback and scoring
+- continues to work even when external AI services are unavailable
+
+**Key idea:**  
+Instead of relying entirely on external AI APIs, the system uses a deterministic fallback mode to ensure reliability in development, testing, and reviewer environments.
+
 ## Demo
 
 ### Reading & Question Flow
