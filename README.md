@@ -10,6 +10,7 @@ A full-stack reading comprehension app that:
 - provides instant feedback and scoring
 - continues to work even when external AI services are unavailable
 
+
 **Key idea:**  
 Instead of relying entirely on external AI APIs, the system uses a deterministic fallback mode to ensure reliability in development, testing, and reviewer environments.
 
