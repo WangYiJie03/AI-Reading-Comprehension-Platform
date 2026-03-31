@@ -1,87 +1,188 @@
 # AI Reading Comprehension Platform
 
-## Live Demo
+A production-minded full-stack reading comprehension application that generates questions, evaluates answers, and remains reliable even when external AI services are unavailable.
 
- **Production URL**  
-https://ai-reading-comprehension-platform-psi.vercel.app
+## Demo
 
-(Responsive and tested on both desktop and mobile)
+### Reading & Question Flow
+Students can read a passage, generate comprehension questions, answer them, and receive immediate feedback with a final score.
+
+![Reading Interface](./reading-interface.png)
+
+### AI Question Generation
+The system supports deterministic mock generation by default, with optional OpenAI integration for real AI-generated questions.
+
+![Question Generation](./question-generation.png)
+
+## Key Highlights
+
+- Built a full-stack React application using **Next.js App Router**, **TypeScript**, and API routes
+- Designed a **resilient AI integration layer** with deterministic fallback from mock mode to optional OpenAI usage
+- Implemented a complete user workflow: **reading → question generation → answering → scoring**
+- Prioritised **production reliability** for local development, CI, restricted networks, and reviewer environments
+- Structured the system for **maintainability**, separating UI, AI logic, content, and provider behaviour
+- Deployed to production using **Vercel**
 
 ---
 
-## Overview
+## Project Overview
 
-The goal of this project is to design and build a **next-generation reading comprehension interface** that improves student engagement, encourages genuine understanding, and demonstrates thoughtful AI integration.
+This project was designed to improve reading comprehension workflows through a clean, responsive interface and reliable AI-assisted question generation.
 
 The application allows students to:
 
-1. Read a passage  
-2. Generate AI-assisted comprehension questions  
-3. Answer questions with immediate feedback  
-4. Review explanations and receive a final score  
+- read a passage
+- generate comprehension questions
+- answer questions with immediate feedback
+- review explanations and receive a final score
 
-The system is intentionally designed to be **reliable, review-friendly, and production-ready**, even in restricted or offline environments.
-
----
-
-## Design Goals & Rationale
-
-This implementation directly responds to the provided user feedback and requirements:
-
-- Encourage **actual reading**, not guessing
-- Provide **clear feedback and explanations**
-- Support **different reading speeds**
-- Avoid brittle reliance on external AI services
-- Maintain a clean, maintainable architecture
-
-Rather than focusing on excessive UI complexity, the project prioritises **clarity, flow, and robustness**, reflecting real production constraints.
+Rather than treating AI as the core dependency, the system was intentionally designed so that the application still works predictably even when external AI services are unavailable.
 
 ---
 
-## Features
+## Why This Project Is Interesting
 
-- Display reading passages with selectable difficulty/length
+Many AI-powered student projects work only when an external provider is available. This one was designed differently.
+
+### Key engineering decision:
+The application uses **mock generation by default** and supports **OpenAI optionally**.
+
+This means the system:
+
+- always works in development
+- remains review-friendly for assessors and recruiters
+- behaves predictably in CI and restricted environments
+- avoids brittle dependence on network/API availability
+
+This project is therefore not just an AI demo — it is an example of **reliable product-oriented system design**.
+
+---
+
+## Core Features
+
+- Reading passage display with selectable difficulty/length
 - AI-generated multiple-choice comprehension questions
-- Explanations shown after submission to reinforce learning
-- Answer tracking (correct / incorrect)
-- Final score and retry flow
-- Responsive layout (mobile & desktop)
-- Clear loading and disabled states during generation
-- Deterministic mock AI for consistent review
+- Immediate answer feedback and explanations
+- Final score calculation and retry flow
+- Responsive design for desktop and mobile
+- Loading / disabled states for cleaner UX
+- Deterministic fallback generation for stable testing and evaluation
 
 ---
 
-## AI Question Generation (Reliable by Design)
+## Architecture & Design Decisions
 
-The system supports **two AI generation modes**:
+### 1. AI Provider Abstraction
 
-### 1. Mock AI (Default)
-- Deterministic, high-quality question generation
-- Always available
-- Ideal for local development, CI, and restricted networks
+The system separates AI behaviour behind a provider layer so that question generation logic is not tightly coupled to one external service.
 
-### 2. OpenAI (Optional)
-- Real AI-generated comprehension questions
-- Uses OpenAI’s API when enabled
+This makes it easier to:
 
-Each API response includes a `source` field (`mock` or `openai`) so reviewers can clearly see which path is used.
+- switch providers
+- test deterministically
+- avoid fragile runtime behaviour
+- preserve consistent output during reviews
+
+### 2. Mock-First Reliability Strategy
+
+Mock mode is the default because external AI services may fail or be inaccessible due to:
+
+- network restrictions
+- CI environments
+- firewall / VPN limitations
+- missing API keys
+
+Instead of breaking the product, the application gracefully falls back to deterministic generation.
+
+### 3. Clean Flow Design
+
+The interface was intentionally scoped to support a simple, readable workflow:
+
+1. choose a passage  
+2. generate questions  
+3. submit answers  
+4. review explanations  
+5. receive a score  
+
+This keeps the product focused on learning outcomes rather than UI complexity.
 
 ---
 
-### Why Mock by Default?
+## Tech Stack
 
-External AI providers may be unavailable in certain environments  
-(e.g. China, VPNs, corporate firewalls, CI pipelines).
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
 
-To ensure:
+### Backend / Server Logic
+- Next.js API Routes
+- OpenAI API (optional)
+- Deterministic mock question generator
 
-- the app always works,
-- reviewers are never blocked,
-- and behaviour is predictable,
+### Deployment
+- Vercel
 
-the system **gracefully falls back** to a deterministic mock generator.
+---
 
-This approach demonstrates **production thinking**, reliability, and good developer experience.
+## Project Structure
+
+```text
+AI-Reading-Comprehension-Platform/
+├── app/
+│   ├── api/
+│   │   └── generate-questions/
+│   │       └── route.ts
+│   ├── layout.tsx
+│   └── page.tsx
+├── lib/
+│   ├── ai.ts
+│   ├── mock.ts
+│   └── passages.ts
+├── public/
+├── README.md
+└── package.json
+```
+
+### Key Files
+
+- `app/page.tsx`  
+  Main UI for reading, answering, and scoring
+
+- `app/api/generate-questions/route.ts`  
+  Server-side question generation endpoint
+
+- `lib/ai.ts`  
+  AI provider abstraction and fallback logic
+
+- `lib/mock.ts`  
+  Deterministic mock generator for reliable local/review usage
+
+- `lib/passages.ts`  
+  Reading passage definitions
+
+---
+
+## Local Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open in browser:
+
+```bash
+http://localhost:3000
+```
 
 ---
 
@@ -89,82 +190,58 @@ This approach demonstrates **production thinking**, reliability, and good develo
 
 AI behaviour is controlled via environment variables:
 
-```env
+```bash
 AI_PROVIDER=mock
 # AI_PROVIDER=openai
 # OPENAI_API_KEY=your_api_key_here
 ```
 
-No configuration is required to run the app in mock mode.
+### Modes
+
+#### Mock Mode (Default)
+- deterministic
+- always available
+- ideal for development, testing, and review
+
+#### OpenAI Mode
+- uses real AI-generated questions
+- requires valid API key
+- useful for demonstrating live AI behaviour
 
 ---
 
-## Tech Stack
+## Production Deployment
 
-- **Next.js (App Router)**
-- **TypeScript**
-- **Tailwind CSS**
-- **OpenAI API** (optional)
-- Deterministic mock AI generator
-- Deployed on **Vercel**
+This project is deployed on Vercel.
 
----
+Live demo:  
+[AI Reading Comprehension Platform](https://ai-reading-comprehension-platform-psi.vercel.app)
 
-## Project Structure (Key Files)
-
-```bash
-app/
- ├─ api/
- │   └─ generate-questions/
- │       └─ route.ts        # AI / mock question generation logic
- ├─ page.tsx                # Main UI (reading, questions, scoring)
- └─ layout.tsx
-
-lib/
- ├─ ai.ts                   # AI provider abstraction + fallback logic
- ├─ mock.ts                 # Deterministic mock question generator
- └─ passages.ts             # Reading passages
-```
-
-## Getting Started (Local Development)
-
-Install dependencies:
-```bash
-npm install
-
-Start the development server:
-npm run dev
-
-Open the app in your browser:
-http://localhost:3000
-```
-
-
-## Notes for Reviewers
-
-- The app runs in **mock mode by default** to ensure reliability and a smooth review experience.
-- The application defaults to **mock AI** for deterministic behaviour and ease of evaluation.
-- **OpenAI integration** can be enabled instantly via environment variables.
-- The focus of this assessment is **architecture, data flow, and robustness**, rather than visual complexity.
-- UI decisions prioritise **readability, learning flow, and maintainability**.
-- All **core requirements** from the assessment brief have been fully implemented.
+The deployment supports quick review and demonstrates the application in a production environment.
 
 ---
 
-## Deployment
+## What This Project Demonstrates
 
-This project is deployed using **Vercel**.
+This project is intended to demonstrate:
 
-- Any push to the `main` branch automatically triggers a new **production deployment**.
-- The deployed application has been tested on both **desktop and mobile** devices.
+- React / Next.js application development
+- TypeScript-based UI and server-side logic
+- API route design and separation of concerns
+- resilience-oriented AI integration
+- product thinking around reliability and reviewability
+- clean user flow and maintainable architecture
 
 ---
 
-## Final Remarks
+## Final Note
 
-This implementation is intentionally scoped to demonstrate:
+This project was intentionally built not just to “use AI,” but to show how AI features can be integrated into a product responsibly.
 
-- Practical and resilient **AI integration strategies**
-- Thoughtful handling of **real-world constraints** (network restrictions, CI, reviewer environment)
-- **Clean, maintainable frontend architecture**
-- A strong focus on **learning outcomes** rather than superficial features
+The focus was on building something that is:
+
+- usable
+- review-friendly
+- reliable
+- maintainable
+- production-minded
